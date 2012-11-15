@@ -1,13 +1,26 @@
 <html>
 <body>
 
-Please upload an image
+<h1>Please upload an image to make thumbnails for</h1>
 
 <form method="POST" action="." type="">
-    <label>Name</label>
-    <input type="text" name="name" />
-    <label>Image</label>
-    <input type="file" name="image" />
+
+    <!-- convert to using form_field -->
+    <div>
+        <label>Name</label>
+        <input type="text" name="name" />
+    </div>
+
+    <div>
+        <label>Image</label>
+        <input type="file" name="image" />
+    </div>
+
+    <div>
+        <label>Notify email when done</label>
+        <input type="text" name="notify" />
+    </div>
+
     {% csrf_token %}
     <input type="submit" />
 </form>

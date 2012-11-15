@@ -1,8 +1,6 @@
-from django.conf.urls import patterns, include, url
-from django.views.generic import TemplateView
+from django.conf.urls import patterns, url
+from views import ScaleImageView
 
 urlpatterns = patterns('',
-    # Examples:
-    url(r'^$', TemplateView.as_view(template_name="home.html"), name='home'),
-
+    url(r'^$', ScaleImageView.as_view(), name='home'),
 )
