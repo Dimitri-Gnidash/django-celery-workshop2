@@ -1,29 +1,64 @@
+{% load form_field_tags %}
+
 <html>
 <body>
 
 <h1>Please upload an image to make thumbnails for</h1>
 
-<form method="POST" action="." type="">
+<form method="POST" action="." enctype="multipart/form-data">
+    {% if success %}
+        <p style="color:yellow">The image has been saved</p>
+    {% endif %}
 
-    <!-- convert to using form_field -->
-    <div>
-        <label>Name</label>
-        <input type="text" name="name" />
-    </div>
+    {% if task_ids %}
+        <p style="color:yellow">The task id we have in the system is {{ task_ids }}</p>
+        <h3>Status</h3>
+        <div id="result_status">
+        </div>
+        <img src="" id="result_images"/>
 
-    <div>
-        <label>Image</label>
-        <input type="file" name="image" />
-    </div>
+    {% endif %}
+    
 
-    <div>
-        <label>Notify email when done</label>
-        <input type="text" name="notify" />
-    </div>
-
+    {% for error in form.non_field_errors %}
+        <p>{{ error }}</p>
+    {% endfor %}       
+    
+    {% display_field form.name %}
+    {% display_field form.image %}
+    {% display_field form.notify %}
+    
     {% csrf_token %}
     <input type="submit" />
 </form>
 
+
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js"></script>
+
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
+
+        <script type="text/javascript">
+            var refreshStatus = function(t) {           
+                $.getJSON("/celery/" + t + "/status/", function(data) {
+                    $("#result_images").after("<p>" + data.task.status + "</p>");
+                    $("#result_images").after("<img src='" + "{{MEDIA_URL}}" + data.task.result + "' />");
+                    if (data.status === "PENDING") {
+                        setTimeout(function() {refreshStatus(t);}, 2000);
+                    }
+                    
+                });    
+            };
+
+            $(document).ready(function() {
+                var tasks = {{ task_ids|safe }};
+                _.each(tasks, function(t) {
+                    setTimeout(function() {refreshStatus(t);}, 2000);
+                });
+            });
+        </script>
+
 </body>
+
+
 </html>

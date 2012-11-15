@@ -116,12 +116,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djcelery',
-    'stallion',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-)
+    'stallion.images',
+    'stallion.form_field',
+    'stallion.email',
+    'workshop2.scale_image',)
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -151,3 +149,37 @@ LOGGING = {
         },
     }
 }
+
+#============= AWS SETTINGS ===============
+AWS_ACCESS_KEY_ID = 'AKIAJGDPV5OXGVR3GXRQ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'rdoingtest'
+
+
+AWS_QUERYSTRING_AUTH = False
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+#============= AWS SETTINGS ===============
+
+#=============EMAIL SETTINGS===============
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_PASSWORD = 'wishington'
+EMAIL_HOST_USER = 'wish.love.mark@gmail.com'
+EMAIL_SUBJECT_PREFIX = ''
+EMAIL_USE_TLS = True
+#=============EMAIL SETTINGS===============
+
+#============= SENTRY SETTINGS ============
+SENTRY_DSN = 'http://d0d2bfda43fe4c6882a11174f2733e96:a7b96c53b5294d06b2f31e005de9b686@sentry.bnotions.com:8090/4'
+
+#============= SENTRY SETTINGS ============
+
+import djcelery
+djcelery.setup_loader()
+
+
+MEDIA_URL = "https://" + AWS_STORAGE_BUCKET_NAME + ".s3.amazonaws.com/"
+
+
