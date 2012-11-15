@@ -38,25 +38,7 @@
 
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
 
-        <script type="text/javascript">
-            var refreshStatus = function(t) {           
-                $.getJSON("/celery/" + t + "/status/", function(data) {
-                    $("#result_images").after("<p>" + data.task.status + "</p>");
-                    $("#result_images").after("<img src='" + "{{MEDIA_URL}}" + data.task.result + "' />");
-                    if (data.status === "PENDING") {
-                        setTimeout(function() {refreshStatus(t);}, 2000);
-                    }
-                    
-                });    
-            };
-
-            $(document).ready(function() {
-                var tasks = {{ task_ids|safe }};
-                _.each(tasks, function(t) {
-                    setTimeout(function() {refreshStatus(t);}, 2000);
-                });
-            });
-        </script>
+        
 
 </body>
 
